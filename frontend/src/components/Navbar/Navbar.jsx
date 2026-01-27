@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, IconButton, Container, Stack, Collapse } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Stack, Slide} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import NavItem from './NavItem';
@@ -166,55 +166,77 @@ function Navbar() {
 
     return (
         <AppBar position="fixed" sx={{ bgcolor: "#fff", boxShadow: 1 }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters sx={{ minHeight: navbarHeight }}>
-          <Box component="a" href="/" sx={{ display: "flex", alignItems: "center", pr: 2 }}>
-            <Box component="img" src="/logo_anosr_up-3.png" alt="Logo" sx={{ height: 36 }} />
-          </Box>
+            <Toolbar sx={{ minHeight: navbarHeight, px: 2, display: "flex", flexDirection: { xs: "row", md: "column" }, justifyContent: "space-between" }}>
+                <Box
+                    component="a"
+                    href="/"
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <Box
+                        component="img"
+                        src="/Logo-ANOSR.png"
+                        alt="Logo"
+                        sx={{ height: 60, width: "auto" }}
+                    />
+                </Box>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Box
+                        sx={{
+                            display: { xs: "none", md: "flex" },
+                            flexWrap: { md: "wrap" },
+                            minWidth: "auto",
+                            gap: 0.5,
+                            justifyContent: "space-evenly",
+                            width: "100%"
+                        }}
+                    >
+                        {navbarPages.map((page) => (
+                            <NavItem key={page.name} page={page} />
+                        ))}
+                    </Box>
+                    <Box sx={{ display: { xs: "flex", md: "none" }, ml: "auto" }}>
+                        <IconButton
+                            onClick={() => setMobileMenuAnchor(!mobileMenuAnchor)}
+                            sx={{ color: "black" }}
+                        >
+                            <MenuIcon />
+                        </IconButton>
+                    </Box>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, gap: 3 }}>
-            {navbarPages.map((page) => (
-              <NavItem key={page.name} page={page} />
-            ))}
-          </Box>
+                </Box>
+            </Toolbar>
 
-          <Box sx={{ display: { xs: "flex", md: "none" }, ml: "auto" }}>
-            <IconButton
-              onClick={() => setMobileMenuAnchor(!mobileMenuAnchor)}
-              sx={{ color: "black" }}
-            >
-              <MenuIcon />
-            </IconButton>
-          </Box>
-        </Toolbar>
-
-        {mobileMenuAnchor && (
-          <Box
-            sx={{
-              position: "absolute",
-              top: navbarHeight,
-              left: 0,
-              width: "100vw",
-              bgcolor: "#fff",
-              zIndex: 1200,
-              boxShadow: 3,
-              maxHeight: `calc(100vh - ${navbarHeight}px)`,
-              overflowY: "auto",
-            }}
-          >
-            <Stack spacing={0}>
-              {navbarPages.map((page) => (
-                <NavItem
-                  key={page.name}
-                  page={page}
-                  isMobile
-                />
-              ))}
-            </Stack>
-          </Box>
-        )}
-      </Container>
-    </AppBar>
+            <Slide direction='left' in={mobileMenuAnchor} mountOnEnter unmountOnExit>
+                <Box
+                    sx={{
+                        position: "fixed",
+                        top: navbarHeight,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        width: "100vw",
+                        bgcolor: "#fff",
+                        zIndex: 1200,
+                        boxShadow: 3,
+                        overflowY: "auto",
+                        px: 1
+                    }}
+                >
+                    <Stack spacing={0} alignItems="flex-start">
+                        {navbarPages.map((page) => (
+                            <NavItem
+                                key={page.name}
+                                page={page}
+                                isMobile
+                            />
+                        ))}
+                    </Stack>
+                </Box>
+            </Slide>
+        </AppBar >
     );
 }
 export default Navbar;

@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Button, MenuItem, Box, Popper, Paper, ClickAwayListener, useMediaQuery, useTheme, Stack } from "@mui/material";
+import { Button, Box, Popper, Paper, ClickAwayListener, useMediaQuery, useTheme, Stack, Collapse, } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
@@ -15,7 +15,6 @@ function NavItem({ page, depth = 0 }) {
     const handleOpen = () => hasChildren && setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const Trigger = isTopLevel ? Button : MenuItem;
 
     return (
         <ClickAwayListener onClickAway={handleClose}>
@@ -23,39 +22,32 @@ function NavItem({ page, depth = 0 }) {
                 ref={anchorRef}
                 onMouseEnter={isDesktop ? handleOpen : undefined}
                 onMouseLeave={isDesktop ? handleClose : undefined}
-                sx={{ display: "inline-block", position: "relative" }}
+                sx={{ position: "relative" }}
             >
-                <Trigger
+                <Button
                     onClick={isDesktop ? undefined : () => setOpen(!open)}
                     sx={{
                         color: "black",
-                        textTransform: "none",
                         fontWeight: "bold",
-                        minWidth: isTopLevel ? "auto" : 150,
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        textAlign: "left",
+                        maxWidth: "50vw",
+                        whiteSpace: "normal",
                         "&:hover": { bgcolor: "#f0f0f0" },
+
                     }}
                 >
-                    <Box sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        flex: 1,
-                        fontVariant: {xs: "body1"}
-                    }}>
-                        {page.name}
-                        {hasChildren &&
-                            (isTopLevel ? <ArrowDropDownIcon fontSize="small" /> : <ArrowRightIcon fontSize="small" />)}
-                    </Box>
-                </Trigger>
+                    {page.name}
+                    {hasChildren && (
+                        open ? <ArrowDropDownIcon /> : <ArrowRightIcon />
+                    )}
+                </Button>
 
-                {hasChildren && (
+                {hasChildren && isDesktop && (
                     <Popper
                         open={open}
                         anchorEl={anchorRef.current}
-                        placement="bottom-start"
-                        disablePortal
+                        placement={isTopLevel ? "bottom-start" : "right-start"}
+                        disablePortal={false}
                         modifiers={[
                             { name: "offset", options: { offset: [0, 0] } },
                             { name: "preventOverflow", options: { boundary: "viewport" } },
@@ -63,15 +55,13 @@ function NavItem({ page, depth = 0 }) {
                         style={{ zIndex: 1300 }}
                     >
                         <Paper
-                            onMouseEnter={isDesktop ? handleOpen : undefined}
-                            onMouseLeave={isDesktop ? handleClose : undefined}
                             sx={{
                                 bgcolor: "#fff",
                                 color: "black",
                                 boxShadow: 3,
                                 borderRadius: 1,
-                                py: 0,
-                                minWidth: 150,
+                                maxHeight: "70vh",
+                                overflowY: "auto"
                             }}
                         >
                             <Stack spacing={0}>
@@ -81,6 +71,26 @@ function NavItem({ page, depth = 0 }) {
                             </Stack>
                         </Paper>
                     </Popper>
+                )}
+
+                {hasChildren && !isDesktop && (
+                    <Box sx={{ width: "100%" }}>
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Stack
+                                sx={{
+                                    width: "100%",
+                                    alignItems: "flex-start",
+                                    maxWidth: "100%",
+                                    overflowWrap: "break-word",
+                                    pl: 2
+                                }}
+                            >
+                                {page.children.map((child) => (
+                                    <NavItem key={child.name} page={child} depth={depth + 1} isMobile />
+                                ))}
+                            </Stack>
+                        </Collapse>
+                    </Box>
                 )}
             </Box>
         </ClickAwayListener>
