@@ -8,12 +8,7 @@ function Footer() {
                 backgroundColor: "#323437",
                 color: "#fff",
                 py: { xs: 4, md: 6 },
-                mt: "auto",
-                marginBottom: 0,
-                bottom: 0,
-                zIndex: 10,
                 width: "100%",
-                position: "fixed",
             }}
         >
             <Box

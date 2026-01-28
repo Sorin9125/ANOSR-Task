@@ -3,7 +3,14 @@ const { reclamationModel } = require("../models");
 const reclamationController = {
     createReclamation: async (req, res) => {
         try {
-            const reclamation = req.body;
+            const reclamation = {
+                university: req.body.university.name,
+                details: req.body.details,
+                studentName: req.body.studentName,
+                phoneNumber: req.body.phoneNumber,
+                email: req.body.email,
+            };
+            console.log(reclamation);
             if (!(reclamation.university && reclamation.details)) {
                 return res.status(400).json({ message: "Universitatea si detaliile reclamatiei trebuiesc completate" })
             }

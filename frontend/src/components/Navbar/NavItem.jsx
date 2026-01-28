@@ -28,7 +28,6 @@ function NavItem({ page, depth = 0 }) {
                     onClick={isDesktop ? undefined : () => setOpen(!open)}
                     sx={{
                         color: "black",
-                        fontWeight: "bold",
                         textAlign: "left",
                         maxWidth: "50vw",
                         whiteSpace: "normal",

@@ -188,7 +188,7 @@ function Navbar() {
                             display: { xs: "none", md: "flex" },
                             flexWrap: { md: "wrap" },
                             minWidth: "auto",
-                            gap: 0.5,
+                            gap: 0.6,
                             justifyContent: "space-evenly",
                             width: "100%"
                         }}
