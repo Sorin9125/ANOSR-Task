@@ -1,7 +1,8 @@
-import { AppBar, Box, Toolbar, IconButton, Stack, Slide} from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, Stack, Slide } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import NavItem from './NavItem';
+import AppContext from '../../Context/AppContext';
 
 const navbarPages = [
     { name: "Home" },
@@ -163,9 +164,10 @@ const navbarPages = [
 function Navbar() {
     const [mobileMenuAnchor, setMobileMenuAnchor] = useState(false);
     const navbarHeight = 60;
+    const { isDarkTheme } = useContext(AppContext);
 
     return (
-        <AppBar position="fixed" sx={{ bgcolor: "#fff", boxShadow: 1 }}>
+        <AppBar position="fixed" sx={{ bgcolor: isDarkTheme ? "#000" : "#fff", boxShadow: 1 }}>
             <Toolbar sx={{ minHeight: navbarHeight, px: 2, display: "flex", flexDirection: { xs: "row", md: "column" }, justifyContent: "space-between" }}>
                 <Box
                     component="a"
@@ -177,7 +179,7 @@ function Navbar() {
                 >
                     <Box
                         component="img"
-                        src="/Logo-ANOSR.png"
+                        src={isDarkTheme ? "/assets/Logo-ANOSR-alb.png" : "assets/Logo-ANOSR.png"}
                         alt="Logo"
                         sx={{ height: 60, width: "auto" }}
                     />
@@ -200,7 +202,7 @@ function Navbar() {
                     <Box sx={{ display: { xs: "flex", md: "none" }, ml: "auto" }}>
                         <IconButton
                             onClick={() => setMobileMenuAnchor(!mobileMenuAnchor)}
-                            sx={{ color: "black" }}
+                            sx={{ color: isDarkTheme ? "#fff" : "#000" }}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -218,7 +220,7 @@ function Navbar() {
                         right: 0,
                         bottom: 0,
                         width: "100vw",
-                        bgcolor: "#fff",
+                        bgcolor: isDarkTheme ? "#000" : "#fff",
                         zIndex: 1200,
                         boxShadow: 3,
                         overflowY: "auto",

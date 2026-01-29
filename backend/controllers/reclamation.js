@@ -1,4 +1,5 @@
 const { reclamationModel } = require("../models");
+const verifyReCaptcha = require("../config/captcha");
 
 const reclamationController = {
     createReclamation: async (req, res) => {
@@ -9,8 +10,8 @@ const reclamationController = {
                 studentName: req.body.studentName,
                 phoneNumber: req.body.phoneNumber,
                 email: req.body.email,
+                token: req.body.token,
             };
-            console.log(reclamation);
             if (!(reclamation.university && reclamation.details)) {
                 return res.status(400).json({ message: "Universitatea si detaliile reclamatiei trebuiesc completate" })
             }
@@ -22,6 +23,9 @@ const reclamationController = {
             }
             if (reclamation?.email && !(/^[A-z1-9.-_]+@[a-z]{1,}.com$/).test(reclamation?.email)) {
                 return res.status(400).json({ message: "Adresa de mail este invalida" });
+            }
+            if(!await verifyReCaptcha(reclamation.token)) {
+                return res.status(400).json({ message: "Verificarea cu reCAPTCHA a esuat"});
             }
             await reclamationModel.create(reclamation);
             return res.status(200).json({ message: "Reclamatia a fost inregistrata cu succes!" });
