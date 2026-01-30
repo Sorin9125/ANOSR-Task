@@ -24,7 +24,7 @@ function App() {
         px={5}
         maxWidth={{ xs: "100%", sm: "30vw", md: "60vw", }}
       >
-        <Typography variant='h1' color={isDarkTheme ? "#fff" : "#000"}>
+        <Typography variant='h1' color={isDarkTheme ? "#fff" : "#000"} textAlign="center">
           Te confrunţi cu o problemă în universitatea ta?
         </Typography>
         <br />

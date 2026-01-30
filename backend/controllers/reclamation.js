@@ -16,7 +16,7 @@ const reclamationController = {
                 return res.status(400).json({ message: "Universitatea si detaliile reclamatiei trebuiesc completate" })
             }
             if (reclamation?.studentName && !(/^[A-z ]{3,}$/gm).test(reclamation?.studentName)) {
-                return res.status(400).json({ message: "Numele trebuie sa contina doar cifre" });
+                return res.status(400).json({ message: "Numele nu trebuie sa contina cifre" });
             }
             if (reclamation?.phoneNumber && !(/^[0-9]{10}$/gm).test(reclamation?.phoneNumber)) {
                 return res.status(400).json({ message: "Numarul de telefon nu este valid" });
